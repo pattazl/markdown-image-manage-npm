@@ -1,0 +1,38 @@
+{
+  "name": "markdown-image-manage",
+  "version": "1.0.0",
+  "description": "A tool for manage markdown's image",
+  "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://gitee.com/pattazl/markdown-image-manage-npm.git",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p .",
+    "dev": "tsc -w -p .",
+    "patch": "npm version patch && git push origin master && git push origin --tags",
+    "minor": "npm version minor && git push origin master && git push origin --tags",
+    "major": "npm version major && git push origin master && git push origin --tags"
+  },
+  "keywords": [
+    "markdown",
+    "image",
+    "download",
+    "upload",
+    "clean",
+    "picgo ^1.2.0"
+  ],
+  "bin": {
+    "md-img": "dist/index.js"
+  },
+  "author": "AustinYoung",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^10.17.60"
+  },
+  "dependencies": {
+    "commander": "^9.1.0",
+    "fs-extra": "^10.0.1"
+  }
+}

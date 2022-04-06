@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"outDir": "dist",
+		"removeComments": true,      // 删除注释 
+		"sourceMap": true,
+		"rootDir": "src",
+		/*"lib": [ "dom", "es5", "es2015.promise" ,"es2015", "es2017"],
+		 "strict": true   enable all strict type-checking options */
+		/* Additional Checks */
+		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
+	}
+}
