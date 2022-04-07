@@ -4,6 +4,11 @@ import * as http from "http";
 import * as path from "path";
 import { URL } from "url";
 
+// 伪装成浏览器
+const headers = { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36" };
+const options = { strictSSL: false, headers };
+// 同步下载方法封装
+let rename = false;
 async function download(url, dest, options) {
   const uri = new URL(url);
   let filename = path.basename(url);
@@ -13,7 +18,11 @@ async function download(url, dest, options) {
       //console.log("res", res.statusCode, res.headers);
       const len = parseInt(res.headers["content-length"], 10);
       fs.ensureDirSync(dest);
-      let filePath = path.join(dest, filename);
+      if(rename)
+      {
+        filename =  new Date().getTime().toString(36)+path.extname(filename); // 36 进制
+      }
+      let filePath = path.join(dest, filename);      
       while (fs.existsSync(filePath)) // 同名文件数量最多1000
       {
         // 如果存在，则需要改名,格式为 文件名(数字递增).后缀 返回最新的文件名
@@ -62,10 +71,11 @@ async function download(url, dest, options) {
   });
 }
 
-export default async (url, dest, options) => {
+export default async (url, dest,re) => {
   try {
+    rename = re;
     const filePath = await download(url, dest, options);
-    console.log(filePath, "filePath");
+    console.log(filePath, "is downloaded");
     return filePath;
   } catch (e) {
     console.log(e);
