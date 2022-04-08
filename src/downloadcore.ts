@@ -3,7 +3,7 @@ import * as https from "https";
 import * as http from "http";
 import * as path from "path";
 import { URL } from "url";
-
+import { logger,newName} from './common'
 // 伪装成浏览器
 const headers = { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36" };
 const options = { strictSSL: false, headers };
@@ -11,7 +11,7 @@ const options = { strictSSL: false, headers };
 let rename = false;
 async function download(url, dest, options) {
   const uri = new URL(url);
-  let filename = path.basename(url);
+  let filename = path.basename(url); // 获取基本的文件名
   const pkg = url.toLowerCase().startsWith("https:") ? https : http;
   return await new Promise((resolve, reject) => {
     pkg.get(uri.href, options).on("response", (res) => {
@@ -20,7 +20,7 @@ async function download(url, dest, options) {
       fs.ensureDirSync(dest);
       if(rename)
       {
-        filename =  new Date().getTime().toString(36)+path.extname(filename); // 36 进制
+        filename =  newName()+path.extname(filename); // 36 进制
       }
       let filePath = path.join(dest, filename);      
       while (fs.existsSync(filePath)) // 同名文件数量最多1000
@@ -75,9 +75,10 @@ export default async (url, dest,re) => {
   try {
     rename = re;
     const filePath = await download(url, dest, options);
-    console.log(filePath, "is downloaded");
+    logger.success(filePath, "is downloaded");
     return filePath;
   } catch (e) {
+    logger.error('download error:');
     console.log(e);
     return '';
   }

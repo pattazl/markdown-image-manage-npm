@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-import { setBracket } from './getImages'
+import { setBracket,logger } from './common'
 import { cleanMD, analyse } from './clean'
 import { download, dlCheck } from './download'
+import { upload, upCheck,linkPicgo } from './upload'
+import { move, mvCheck } from './move'
 import { Command } from 'commander'
 import * as fs from 'fs'
 
@@ -23,8 +25,14 @@ const program = new Command();
 function checkFile(file: string): boolean {
     // md文件路径
     if (!fs.existsSync(file)) {
-        console.log(`file[${file}] is not exists!`);
+        logger.error(`file[${file}] is not exists!`);
         return false;
+    }else{
+        var stat = fs.statSync(file);
+        if (!stat.isFile()) {
+            logger.error(`[${file}] is not file!!!`)
+            return false;
+        }
     }
     return true;
 }
@@ -46,15 +54,15 @@ program
     .description('analyse the images of markdown, default command')
     .action((file) => {
         if (!checkFile(file)) return;
-        console.log(`Will analyse images in[${file}]`)
+        logger.info(`Will analyse images in[${file}]`)
         analyse(file);
     });
 program
     .command('c  <file>')
-    .description('clean and remove the images that not used in local folder')
+    .description('clean and remove the images(png,jpg,gif,ico...) that not used in local folder')
     .action((file) => {
         if (!checkFile(file)) return;
-        console.log(`Will clean images in[${file}]`)
+        logger.info(`Will clean images in[${file}]`)
         cleanMD(file);
     });
 program
@@ -73,8 +81,35 @@ program
 program
     .command('u  <file>')
     .description('upload images by picgo,should global install picgo(npm i picgo -g) and set the config')
+    .option('-n, --rename', 'whether rename the image file')
+    .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create a new file')
+    .option('-o, --overwrite', 'overwrite original md file and not create a new')
+    //.option('-d, --direct', 'direct upload image file, not add the mdfile name in path')
+    .option('-p, --remotepath <path>', "path be added at begin, default is md file's name",'')
     .action((file, options) => {
-        if (!checkFile(file)) return;
+        if(!checkFile(file)) return;
+        if(upCheck(file, options)){
+            upload();
+        };
+    });
+program
+    .command('m  <file>')
+    .description('move local images to another folder')
+    .requiredOption('-l, --local <path>', 'the image will move to new local folder')
+    .option('-n, --rename', 'whether rename the image file')
+    .option('-o, --overwrite', 'overwrite original md file and not create a new')
+    .action((file, options) => {
+        if(!checkFile(file)) return;
+        if(mvCheck(file, options)){
+            move();
+        };
+    });
+// 可以用 package.josn 的 script 中增加 "postinstall":"npm link picgo" 实现，但是用户体验不好
+program
+    .command('l')
+    .description('link the global picgo')
+    .action((file, options) => {
+        linkPicgo();
     });
 program.parse();
 /*

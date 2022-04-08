@@ -1,19 +1,20 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import {getImages} from './getImages'
+import {getImages,logger} from './common'
 
 const removeFolder = 'md-img-remove'; // 文件名重命名前缀
-const extArr = ['.png','.jpg','.bmp','.gif','.jpeg']; // 支持的图片格式
+const extArr = ['.png','.jpg','.bmp','.gif','.jpeg','.ico','.tga','.rle','.tif','.cur','.ani','.iff']; // 支持的图片格式
 
 export function cleanMD(mdFile:string)
 {
     try{
         var mdfileName = fs.realpathSync(mdFile);
         var obj = getImages(mdfileName);
-        console.log(`----local images total[${obj.local.length}]----\n${obj.local.join('\n')}`)
-        console.log(`----net images total[${obj.net.length}]----\n${obj.net.join('\n')}`)
-        console.log(`----error message total[${obj.warn.length}]----\n${obj.warn.join('\n')}`)
-        doFile( obj.local ); 
+        logger.info(`----local images total[${obj.local.length}]----`)
+        console.log(`${obj.local.join('\n')}`)
+        logger.info(`----net images total[${obj.net.length}]----`)
+        console.log(`${obj.net.join('\n')}`)
+        doFile( obj.local );
     }catch(e)
     {
         console.log(e.message);
@@ -24,9 +25,10 @@ export function analyse(mdFile:string)
     try{
         var mdfileName = fs.realpathSync(mdFile);
         var obj = getImages(mdfileName);
-        console.log(`----local images total[${obj.local.length}]----\n${obj.local.join('\n')}`)
-        console.log(`----net images total[${obj.net.length}]----\n${obj.net.join('\n')}`)
-        console.log(`----error message total[${obj.warn.length}]----\n${obj.warn.join('\n')}`)
+        logger.info(`----local images total[${obj.local.length}]----`)
+        console.log(`${obj.local.join('\n')}`)
+        logger.info(`----net images total[${obj.net.length}]----`)
+        console.log(`${obj.net.join('\n')}`)
     }catch(e)
     {
         console.log(e.message);
@@ -44,12 +46,12 @@ function doFile(picArr)
         if(parentPath ==''){ parentPath = currpath;}
         if( parentPath != currpath )
         {
-            alert('local image path is diff, must be the same!'); // 图片文件夹不一样！
+            logger.error('local image path is diff, must be the same!'); // 图片文件夹不一样！
             return;
         }
         mdFile.push(path.basename(picArr[i]))
     }
-    // 循环走文件，如果是png图片，但是不在 mdFile 中，则进行处理
+    // 循环走文件，如果是图片，但是不在 mdFile 中，则进行处理
     var removeArr = [];
     // 获取 prePath 目录下所有文件
     fs.readdirSync(parentPath).forEach(function (name) {
@@ -76,5 +78,5 @@ function doFile(picArr)
         } else if (stat.isDirectory()) {
         }
     });
-    console.log(`----removed images total[${removeArr.length}] to [${removeFolder}]----\n${removeArr.join('\n')}`)
+    logger.info(`----removed images total[${removeArr.length}] to [${removeFolder}]----\n${removeArr.join('\n')}`)
 }
