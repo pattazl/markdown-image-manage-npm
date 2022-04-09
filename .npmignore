@@ -5,6 +5,13 @@
 *.pid
 *.gz
 *.map
+*.ts
+*.zip
+*.tgz
 
+tsconfig.json
+package.json
+
+.vscode/**
 others/**
 src/**

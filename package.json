@@ -1,12 +1,12 @@
 {
   "name": "markdown-image-manage",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A tool for manage markdown's image",
   "main": "dist/index.js",
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://gitee.com/pattazl/markdown-image-manage-npm.git",
+  "homepage": "https://github.com/pattazl/markdown-image-manage-npm",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
@@ -18,10 +18,14 @@
   "keywords": [
     "markdown",
     "image",
+    "picture",
+    "analyze",
     "download",
     "upload",
+    "move file",
     "clean",
-    "picgo ^1.2.0"
+    "picgo",
+    "pic bed"
   ],
   "bin": {
     "md-img": "dist/index.js"

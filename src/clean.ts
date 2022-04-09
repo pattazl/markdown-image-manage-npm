@@ -20,7 +20,7 @@ export function cleanMD(mdFile:string)
         console.log(e.message);
     }
 }
-export function analyse(mdFile:string)
+export function analyze(mdFile:string)
 {
     try{
         var mdfileName = fs.realpathSync(mdFile);

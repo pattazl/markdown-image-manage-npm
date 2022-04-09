@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { setBracket,logger,mdCheck } from './common'
-import { cleanMD, analyse } from './clean'
+import { cleanMD, analyze } from './clean'
 import { download, dlCheck } from './download'
 import { upload, upCheck,linkPicgo } from './upload'
 import { move, mvCheck } from './move'
@@ -24,7 +24,7 @@ const program = new Command();
 // program.parse(process.argv);
 // 全局options
 program
-    .version('0.0.1')
+    .version('0.0.3')
     .description('manage the images of markdown file')
     .option('-b, --brackets', 'whether the image path include right brackets')
     .hook('preAction', (thisCommand, actionCommand) => {
@@ -39,11 +39,11 @@ program
 // 不同命令行
 program
     .command('a <file>', { isDefault: true })
-    .description('analyse the images of markdown, default command')
+    .description('analyze the images of markdown, default command')
     .action((file) => {
         if (!mdCheck(file)) return;
-        logger.info(`Will analyse images in[${file}]`)
-        analyse(file);
+        logger.info(`Will analyze images in[${file}]`)
+        analyze(file);
     });
 program
     .command('c  <file>')
@@ -56,10 +56,11 @@ program
 program
     .command('d  <file>')
     .description('download the images that not used in local folder')
-    .option('-l, --local <path>', 'the image will store in local folder,absolute path or relative of md file, default is [./markdown file name.assets]')
+    .option('-l, --local <path>', `local folder which the images will save,support absolute or relative path.
+default is [./markdown file name.assets]`)
     .option('-n, --rename', 'whether rename the image file')
-    .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create a new file')
-    .option('-o, --overwrite', 'overwrite original md file and not create a new')
+    .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create backup file')
+    .option('-o, --overwrite', 'overwrite original md file and not create backup file')
     .action((file, options) => {
         if (dlCheck(file, options)) {
             download();
@@ -69,10 +70,14 @@ program
     .command('u  <file>')
     .description('upload images by picgo,should global install picgo(npm i picgo -g) and set the config')
     .option('-n, --rename', 'whether rename the image file')
-    .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create a new file')
-    .option('-o, --overwrite', 'overwrite original md file and not create a new')
+    .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create backup file')
+    .option('-o, --overwrite', 'overwrite original md file and not create backup file')
     //.option('-d, --direct', 'direct upload image file, not add the mdfile name in path')
-    .option('-p, --remotepath <path>', "path be added at begin, default is md file's name",'')
+    // path be added at begin, default is md file's name (default: "")
+    .option('-p, --remotepath <path>', `which be added at beginning of PicBed path, default is empty.
+When empty, it will add with md file name.
+When '/' or '\\' it will not add anymore.
+It is used for separate the images by md file name.`,'')
     .action((file, options) => {
         if(upCheck(file, options)){
             upload();
@@ -81,9 +86,9 @@ program
 program
     .command('m  <file>')
     .description('move local images to another folder')
-    .requiredOption('-l, --local <path>', 'the image will move to new local folder')
+    .requiredOption('-l, --local <path>', 'local folder which the images will move to,support absolute or relative path.')
     .option('-n, --rename', 'whether rename the image file')
-    .option('-o, --overwrite', 'overwrite original md file and not create a new')
+    .option('-o, --overwrite', 'overwrite original md file and not create backup file')
     .action((file, options) => {
         if(mvCheck(file, options)){
             move();

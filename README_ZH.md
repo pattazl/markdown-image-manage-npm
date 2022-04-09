@@ -22,6 +22,8 @@ markdown文件(简称md文件)中的图片大部分是以资源方式展示，�
 
 ## 安装
 
+首先需要确保已经安装了 node.js 12 以上版本
+
 建议通过 `npm i markdown-image-manage -g` 方式全局安装本工具，安装后可使用 `md-img -h` 查看相关帮助。
 
 如果需要上传图片，请安装并设置picgo命令行工具
@@ -54,7 +56,7 @@ d:\image3.png | not exist
 
 ```shell
 md-img a e:\doc\test.md
- Will analyse images in[e:\doc\test.md]
+ Will analyze images in[e:\doc\test.md]
  ----error message total[3]----
 d:\image1.png | not exist
 d:\image2.png| not exist
@@ -113,7 +115,7 @@ test2.png
   -l, --local <path> 图片要下载的目标路径，可设置绝对路径或相对路径，默认路径[md文件名.assets]，如md文件为test.md ，则目录为 test.assets
   -n, --rename      下载后是否需要重命名图片名，如无此参数将默认用原文件名，如果文件重复，则文件名后将自动添加 **(数字)** ，数字最大为999
   -r, --readonly     仅下载网络图片，但是不修改md文件中对应的图片链接，如无此参数，修改md文件中的图片链接并进行写入。
-  -o, --overwrite   修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_localBK结尾。
+  -o, --overwrite   修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_dlBK结尾。
 
 #### 举例
 
@@ -142,7 +144,7 @@ to localFolder[e:\doc\test.assets]
 
 安装后需要配置相关的图床帐号等信息，以便于顺利使用图床，建议用命令行 `picgo u /x/xxx.png` 测试是否可以成功上传。
 
-picgo支持多种图床包括自定义FTP等
+picgo支持多种图床和各种插件，如果通过插件 picgo-plugin-ftp-uploader 实现上传到FTP服务器(被动模式)
 
 #### 关联
 
@@ -169,7 +171,7 @@ linking picgo...
 
   -n, --rename            上传时是否重命名图片文件
   -r, --readonly           上传后不修改md文件中对应的图片链接，如无此参数，修改md文件中的图片链接并进行写入。
-  -o, --overwrite          修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_netBK结尾。
+  -o, --overwrite          修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_upBK结尾。
   -p, --remotepath <path>  图床上需要添加的远程路径，默认为空。为空时表示在图床上建立以md文件名的目录 ，以区分不同md文件的图片，用 / 或\ 时表示直接不添加目录，也可自定义其他目录名。 
 
 比如图床上的设置的默认目录为 /images/ ，上传的文件为test.md，此参数为空，则图片将保存到  /images/test/ 目录下。
@@ -232,9 +234,9 @@ http://github.com/images//test/l1qlkj5j.png
 
 移动md文件中的本地图片到指定目录，详细参数如下
 
-  -l, --local <path> 图片要下载的目标路径，可设置绝对路径或相对路径，默认路径[md文件名.assets]，如md文件为test.md ，则目录为 test.assets
+  -l, --local <path> 图片要移动的目标路径，可设置绝对路径或相对路径，必填
   -n, --rename      移动时是否需要重命名图片名，如无此参数将默认用原文件名，使用原文件名时，如果文件名重复，则文件名后将自动添加 **(数字)** ，数字最大为999
-  -o, --overwrite   修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_moveBK结尾。
+  -o, --overwrite   修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_mvBK结尾。
 
 #### 举例
 
@@ -247,7 +249,7 @@ Will Move images to localFolder[e:\doc\newfolder]
  The image links[3] in [e:\doc\test.md] has been updated
 ```
 
-默认会增加备份文件  test__mvBK.md 文件
+默认会增加备份文件  test_mvBK.md 文件
 
 ## 变更记录
 
@@ -256,9 +258,17 @@ Will Move images to localFolder[e:\doc\newfolder]
 
 第一个具备分析，清理，下载，上传，移动图片的版本
 
+### 0.0.2
+
+### 0.0.3
+
+添加相关说明文档
+
 ## 仓库地址
 
 https://github.com/pattazl/markdown-image-manage-npm
+
+https://gitee.com/pattazl/markdown-image-manage-npm
 
 **使用愉快!**
 
