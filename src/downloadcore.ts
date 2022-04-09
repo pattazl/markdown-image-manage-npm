@@ -3,7 +3,7 @@ import * as https from "https";
 import * as http from "http";
 import * as path from "path";
 import { URL } from "url";
-import { logger,newName} from './common'
+import { logger, newName ,getAntiSameFileName } from './common'
 // 伪装成浏览器
 const headers = { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36" };
 const options = { strictSSL: false, headers };
@@ -18,28 +18,14 @@ async function download(url, dest, options) {
       //console.log("res", res.statusCode, res.headers);
       const len = parseInt(res.headers["content-length"], 10);
       fs.ensureDirSync(dest);
-      if(rename)
-      {
-        filename =  newName()+path.extname(filename); // 36 进制
+      if (rename) {
+        filename = newName() + path.extname(filename); // 36 进制
       }
-      let filePath = path.join(dest, filename);      
-      while (fs.existsSync(filePath)) // 同名文件数量最多1000
-      {
-        // 如果存在，则需要改名,格式为 文件名(数字递增).后缀 返回最新的文件名
-        let f = path.parse(filePath);
-        var re = /\((\d+)\)$/;
-        if (re.test(f.name)) {
-          let num = parseInt(RegExp.$1, 10);
-          if (num > 999) {
-            reject(`file num[${num}] >999`);
-            return;
-          }
-          let newName = f.name.replace(re, '(' + (++num) + ')') + f.ext;
-          filePath = path.join(dest, newName);
-        } else {
-          let newName = f.name + '(1)' + f.ext; // 重复时初始化的文件
-          filePath = path.join(dest, newName);
-        }
+
+      let filePath = getAntiSameFileName(dest, filename);
+      if (filePath == '') {
+        reject('get file path fail!');
+        return;
       }
       if (res.statusCode === 200) {
         const file = fs.createWriteStream(filePath);
@@ -71,7 +57,7 @@ async function download(url, dest, options) {
   });
 }
 
-export default async (url, dest,re) => {
+export default async (url, dest, re) => {
   try {
     rename = re;
     const filePath = await download(url, dest, options);

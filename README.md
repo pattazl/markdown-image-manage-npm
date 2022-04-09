@@ -1,23 +1,33 @@
-## markdown-image-manage
+# markdown-image-manage
 
-a plugin for picgo , append additional path of upload file.
+ "markdown-image-manage" is a tool for manage the images of markdown file .
+ 
 
-通过命令行动态管理markdown中的图片可以清理，下载，上传图片
-
----
-
-## usage:
+## Feature
 
 
 
-## 使用方法:
+## Requirements
 
-`md-img markdown文件 --clean`
+need picgo when upload image
 
-1. markdown中的本地图片需要在同一个目录内，因为需要对这个目录进行清理
-2. 清理markdown对应本地文件中没有引用的图片将移动到 md-img-remove 目录下
-3. 给出本地图片清单，失效图片清单，网络图片清单
+## Usage
+
+`md-img -h` get the help
+
+`md-img a markdown filepath`
 
 
+## Release Notes
 
+Users appreciate release notes as you update your extension.
 
+### 1.0.0
+
+Initial release of ...
+
+## Git
+
+https://github.com/pattazl/markdown-image-manage-npm
+
+**Enjoy!**

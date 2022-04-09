@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { setBracket,logger } from './common'
+import { setBracket,logger,mdCheck } from './common'
 import { cleanMD, analyse } from './clean'
 import { download, dlCheck } from './download'
 import { upload, upCheck,linkPicgo } from './upload'
@@ -22,22 +22,10 @@ const program = new Command();
 //   .option('-u, --upload', 'upload images by picgo')
 
 // program.parse(process.argv);
-function checkFile(file: string): boolean {
-    // md文件路径
-    if (!fs.existsSync(file)) {
-        logger.error(`file[${file}] is not exists!`);
-        return false;
-    }else{
-        var stat = fs.statSync(file);
-        if (!stat.isFile()) {
-            logger.error(`[${file}] is not file!!!`)
-            return false;
-        }
-    }
-    return true;
-}
 // 全局options
 program
+    .version('0.0.1')
+    .description('manage the images of markdown file')
     .option('-b, --brackets', 'whether the image path include right brackets')
     .hook('preAction', (thisCommand, actionCommand) => {
         if (thisCommand.opts().brackets) {
@@ -53,7 +41,7 @@ program
     .command('a <file>', { isDefault: true })
     .description('analyse the images of markdown, default command')
     .action((file) => {
-        if (!checkFile(file)) return;
+        if (!mdCheck(file)) return;
         logger.info(`Will analyse images in[${file}]`)
         analyse(file);
     });
@@ -61,7 +49,7 @@ program
     .command('c  <file>')
     .description('clean and remove the images(png,jpg,gif,ico...) that not used in local folder')
     .action((file) => {
-        if (!checkFile(file)) return;
+        if (!mdCheck(file)) return;
         logger.info(`Will clean images in[${file}]`)
         cleanMD(file);
     });
@@ -73,7 +61,6 @@ program
     .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create a new file')
     .option('-o, --overwrite', 'overwrite original md file and not create a new')
     .action((file, options) => {
-        if (!checkFile(file)) return;
         if (dlCheck(file, options)) {
             download();
         }
@@ -87,7 +74,6 @@ program
     //.option('-d, --direct', 'direct upload image file, not add the mdfile name in path')
     .option('-p, --remotepath <path>', "path be added at begin, default is md file's name",'')
     .action((file, options) => {
-        if(!checkFile(file)) return;
         if(upCheck(file, options)){
             upload();
         };
@@ -99,7 +85,6 @@ program
     .option('-n, --rename', 'whether rename the image file')
     .option('-o, --overwrite', 'overwrite original md file and not create a new')
     .action((file, options) => {
-        if(!checkFile(file)) return;
         if(mvCheck(file, options)){
             move();
         };

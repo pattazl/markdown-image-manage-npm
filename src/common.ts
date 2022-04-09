@@ -116,7 +116,25 @@ export let localFolder = ''; // 目标文件夹
 export let readonly = false; // 是否只读，默认会写入新文件
 export let overwriteFile = false; // 是否覆盖原先的md文件
 export let rename = false; // 是否下载的图片重新命名
+
+export function mdCheck(file: string): boolean {
+    // md文件路径
+    if (!fs.existsSync(file)) {
+        logger.error(`file[${file}] is not exists!`);
+        return false;
+    }else{
+        var stat = fs.statSync(file);
+        if (!stat.isFile()) {
+            logger.error(`[${file}] is not file!!!`)
+            return false;
+        }
+    }
+    mdFile = file ; // 内部对象赋值，多个模块共用
+    return true;
+}
+// 有本地lcoal路径的检查程序
 export function localCheck(file: string, options: any, defaultFolder = '') {
+    if(!mdCheck(file))return false;
     let parentPath = path.dirname(file);
     let targetFolder = ''; // 目标保存
     if (options.local == null) {
@@ -144,7 +162,6 @@ export function localCheck(file: string, options: any, defaultFolder = '') {
     // 模块内部变量结构赋值
     ({ readonly, overwriteFile, rename } = getOpt(options));
     localFolder = targetFolder;
-    mdFile = file;
     return true;
 }
 // 简单参数option的统一赋值
@@ -156,7 +173,8 @@ export function getOpt(options) {
 }
 // 重新命名新文件名
 export function newName() {
-    return new Date().getTime().toString(36);
+    let num = Math.random().toString().slice(2,4);// 增加2位随机数防止时间冲突
+    return new Date().getTime().toString(36) + num;
 }
 // 转换为相对路径,第一个参数为相对路径，第二个为新的文件全路径
 export function getAutoPath(dir: string, newfile: string) {
@@ -167,12 +185,40 @@ export function getAutoPath(dir: string, newfile: string) {
     return newfile;
 }
 // 备份
-export function saveFile(content:string,suffix:string) {
+export function saveFile(content:string,suffix:string,count:number) {
+    if(count==0)
+    {
+        logger.info(`There are no link changed in [${mdFile}],skip save !`);
+        return;
+    }
     let ofile = path.parse(mdFile);
     if (!overwriteFile) {
         let newFilename = path.join(ofile.dir, ofile.name + suffix + ofile.ext);
         fs.copyFileSync(mdFile, newFilename); // 原文件备份
     }
     fs.writeFileSync(mdFile, content);
-    logger.success(`The image link in [${mdFile}] has been updated`);
+    logger.success(`The image links[${count}] in [${mdFile}] has been updated`);
+}
+// 输入需要写入的文件名，如果发现重复，增加(序号) ，序号最大999 ，如果成功返回真实路径，否则返回空字符串
+export function getAntiSameFileName(dest: string, filename: string): string {
+    let filePath = path.join(dest, filename);
+    while (fs.existsSync(filePath)) // 同名文件数量最多1000
+    {
+        // 如果存在，则需要改名,格式为 文件名(数字递增).后缀 返回最新的文件名
+        let f = path.parse(filePath);
+        var re = /\((\d+)\)$/;
+        if (re.test(f.name)) {
+            let num = parseInt(RegExp.$1, 10);
+            if (num > 999) {
+                logger.error(`file num[${num}] >999`);
+                return '';
+            }
+            let newName = f.name.replace(re, '(' + (++num) + ')') + f.ext;
+            filePath = path.join(dest, newName);
+        } else {
+            let newName = f.name + '(1)' + f.ext; // 重复时初始化的文件
+            filePath = path.join(dest, newName);
+        }
+    }
+    return filePath;
 }

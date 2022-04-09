@@ -1,15 +1,15 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { getImages,escapeStringRegexp,logger,getOpt,saveFile } from './common'
+import { getImages, escapeStringRegexp, logger, getOpt, saveFile, mdFile, mdCheck } from './common'
 // 主要内部变量
 //var downThread = 1;
-let mdFile = ''; // 需要处理的文件
 let myPicgo = null; // picgo对象
 let readonly = false; // 是否只读，默认会写入新文件
 let rename = false; // 是否下载的图片重新命名
 let remotepath = ''; // 是否路径中不增加md文件名的文件夹，默认会自动增加文件夹以将不同md文件的图片分离开
 
 export function upCheck(file: string, options: any) {
+    if (!mdCheck(file)) return false;
     try {
         const { PicGo } = require('picgo')
         myPicgo = PicGo;
@@ -19,20 +19,18 @@ export function upCheck(file: string, options: any) {
     }
     //console.log('can use picgo');
     // 模块内部变量结构赋值
-    ({ readonly, rename}  = getOpt(options) );
-    mdFile = file;
+    ({ readonly, rename } = getOpt(options));
+    // 需要处理的文件
     // 对MD的结构化
     let oMdFile = path.parse(mdFile);
     let rp = options.remotepath
-    if( rp =='')
-    {
+    if (rp == '') {
         // 默认使用文件名做路径
         remotepath = oMdFile.name;
-    }else if( rp.reaplce(/[\\/\s]/g,'')=='')
-    {
+    } else if (rp.reaplce(/[\\/\s]/g, '') == '') {
         // 根目录,空目录等，不用加前缀
         remotepath = '';
-    }else{
+    } else {
         remotepath = rp;
     }
     return true;
@@ -65,12 +63,11 @@ export async function upload() // ,thread:number
     picgo1.on('beforeUpload', ctx => {
         let fileName = ctx.output[0].fileName;
         let upFile = path.parse(fileName);
-        if(rename)
-        {
+        if (rename) {
             // 36 进制重命名上传后的文件
-            fileName = path.join(upFile.dir,new Date().getTime().toString(36)+upFile.ext); 
+            fileName = path.join(upFile.dir, new Date().getTime().toString(36) + upFile.ext);
         }
-        if(remotepath !=''){
+        if (remotepath != '') {
             // 需要添加 md名的目录
             ctx.output[0].fileName = `${remotepath}/` + fileName;
         }
@@ -82,26 +79,32 @@ export async function upload() // ,thread:number
     let content = fileObj.content;
     //downThread = thread;
     // 对网络图片去重，不必每次下载
-    let set = new Set(); 
-    fileArr.forEach((item)=> set.add(item)); 
-    let upArr:string[] = Array.from(set) as string[];
-    let count=0,len = upArr.length;
-    for(let file of upArr)
-    {
+    let set = new Set();
+    fileArr.forEach((item) => set.add(item));
+    let upArr: string[] = Array.from(set) as string[];
+    let count = 0, len = upArr.length;
+    let successCount = 0;
+    for (let file of upArr) {
         count++;
         logger.info(`uploading [${file}], ${count}/${len}`);
-        let netFile = await picgo1.upload([file]) ;// 一次上传一个
-        // 成功上传返回结果
-        if(netFile.length>0){
-            let first = netFile[0];
-            // 适配图片的格式
-            var reg = new RegExp( '!\\[([^\\]]*)\\]\\('+ escapeStringRegexp(fileMapping[file]) +'\\)','ig');
-            content =  content.replace(reg,'![$1]('+ first.url +')'); // 内容替换
+        try {
+            let netFile = await picgo1.upload([file]);// 一次上传一个
+            // 成功上传返回结果
+            if (netFile.length > 0) {
+                let first = netFile[0];
+                if(first.url==null)continue;
+                // 适配图片的格式
+                var reg = new RegExp('!\\[([^\\]]*)\\]\\(' + escapeStringRegexp(fileMapping[file]) + '\\)', 'ig');
+                content = content.replace(reg, '![$1](' + first.url + ')'); // 内容替换
+                successCount++;
+            }
+        } catch (e) {
+            console.log(e);
         }
     }
-    if(!readonly) // 需要写入md文件
+    if (!readonly) // 需要写入md文件
     {
-        saveFile(content,'_netBK');
+        saveFile(content, '_upBK', successCount);
     }
 }
 

@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { getImages,escapeStringRegexp,logger,
     localCheck,mdFile,localFolder,rename,
-    newName ,getAutoPath,saveFile} from './common'
+    newName ,getAutoPath,saveFile,getAntiSameFileName} from './common'
 // 主要内部变量
 // let mdFile = ''; // 需要处理的文件
 // let localFolder = ''; // 新的文件夹
@@ -31,25 +31,32 @@ export async function move() // ,thread:number
     fileArr.forEach((item)=> set.add(item)); 
     let uniArr:string[] = Array.from(set) as string[];
     let count=0,len = uniArr.length;
+    let successCount = 0;
     for(let file of uniArr)
     {
         count++;
-        let newFile = '';
+        let newFileName = '';
         // 转移到目标路径 
         let imageFile = path.parse(file);
         if(rename)
         {
             //文件重命名
-            newFile = path.join( localFolder,newName()+ imageFile.ext)
+            newFileName = newName()+ imageFile.ext;
         }else{
             // 仅仅更换目录
-            newFile = path.join( localFolder,imageFile.base)
+            newFileName = imageFile.base;
+        }
+        let newFile = getAntiSameFileName(localFolder,newFileName);
+        if( newFile == ''){
+            logger.error(`get new image file name[${newFile}] fail!`);
+            return;
         }
         logger.info(`[${file}] move to [${newFile}], ${count}/${len}`);
         try{
             fs.renameSync(file,newFile);
             var reg = new RegExp( '!\\[([^\\]]*)\\]\\('+ escapeStringRegexp(fileMapping[file]) +'\\)','ig');
             content =  content.replace(reg,'![$1]('+ getAutoPath(ofile.dir, newFile) +')'); // 内容替换
+            successCount++;
         }catch(e)
         {
             logger.error('move error:');
@@ -57,6 +64,6 @@ export async function move() // ,thread:number
         }
     }
     // 需要写入md文件
-    saveFile(content,'_moveBK');
+    saveFile(content,'_mvBK',successCount);
 }
 
