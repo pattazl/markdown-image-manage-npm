@@ -92,6 +92,9 @@ http://github.com/favicon.ico
 `md-img c markdownFilePath `
 
 Check all pictures in the local picture folder of MD file and remove the pictures that do not belong to this MD file
+
+support local picture files suffix include  '.png','.jpg','.bmp','.gif','.jpeg','.ico','.tga','.rle','.tif','.cur','.ani','.iff'
+
 1. All local pictures in markdown should to be in the same directory, because this directory will be cleaned up
 2. Move the pictures not referenced in the MD file to the sub-directory( named md-img-remove ) in the picture directory
 3. The same as  **analyze**  command , it will list the pictures and the cleaned files

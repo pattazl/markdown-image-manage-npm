@@ -74,7 +74,9 @@ http://github.com/favicon.ico
 
 `md-img c markdown文件 `
 
-整理md的本地图片文件夹内的图片，移走不属于本md文件的图片
+整理md的本地图片文件夹内的图片，移走不属于本md文件的图片。
+
+本地文件夹中根据后缀识别图片，格式范围为 '.png','.jpg','.bmp','.gif','.jpeg','.ico','.tga','.rle','.tif','.cur','.ani','.iff'
 
 1. markdown中的所有本地图片需要在同一个目录内，因为需要对这个目录进行清理
 2. 将md文件中没有引用的图片移动到图片目录下的 md-img-remove 目录中
