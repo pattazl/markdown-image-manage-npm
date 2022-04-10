@@ -10,7 +10,6 @@
 *.tgz
 
 tsconfig.json
-package.json
 
 .vscode/**
 others/**

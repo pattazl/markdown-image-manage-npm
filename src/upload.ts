@@ -35,21 +35,20 @@ export function upCheck(file: string, options: any) {
     }
     return true;
 }
-export function linkPicgo() // ,thread:number
+export function linkPicgo()
 {
     console.log('check picgo installation...')
     let runPath = path.dirname(require.main.filename);
-    //console.log( path.dirname(require.main.filename))
     let execSync = require('child_process').execSync;
     try {
-        execSync('picgo -v', { cwd: runPath });
+        execSync('picgo -v', { cwd: runPath });  // 尝试执行 PicGo命令
     } catch (e) {
         logger.error('!!Have not install global picgo, please run "npm install picgo -g" ');
         return;
     }
     console.log('linking picgo...')
     try {
-        execSync('npm link picgo', { cwd: runPath });
+        execSync('npm link picgo', { cwd: runPath });  // 通过命令进行关联
     } catch (e) {
         logger.error('!!Link error!!');
         return;
