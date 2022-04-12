@@ -7,20 +7,13 @@ const extArr = ['.png','.jpg','.bmp','.gif','.jpeg','.ico','.tga','.rle','.tif',
 
 export function cleanMD(mdFile:string)
 {
-    try{
-        var mdfileName = fs.realpathSync(mdFile);
-        var obj = getImages(mdfileName);
-        logger.info(`----local images total[${obj.local.length}]----`)
-        console.log(`${obj.local.join('\n')}`)
-        logger.info(`----net images total[${obj.net.length}]----`)
-        console.log(`${obj.net.join('\n')}`)
-        doFile( obj.local );
-    }catch(e)
-    {
-        console.log(e.message);
-    }
+    analyzeCore(mdFile,true)
 }
 export function analyze(mdFile:string)
+{
+    analyzeCore(mdFile)
+}
+function analyzeCore(mdFile:string,flag:boolean = false)
 {
     try{
         var mdfileName = fs.realpathSync(mdFile);
@@ -29,6 +22,9 @@ export function analyze(mdFile:string)
         console.log(`${obj.local.join('\n')}`)
         logger.info(`----net images total[${obj.net.length}]----`)
         console.log(`${obj.net.join('\n')}`)
+        if(flag){
+            doFile( obj.local );
+        }
     }catch(e)
     {
         console.log(e.message);
