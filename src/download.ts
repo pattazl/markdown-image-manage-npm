@@ -11,9 +11,8 @@ import {
 //var downThread = 1;
 
 export function dlCheck(file: string, options: any) {
-    let folderName = './' + path.parse(file).name + '.assets';
     // 将会地址传递给 mdFile等变量
-    if (localCheck(file, options, folderName)) {
+    if (localCheck(file, options)) {
         console.log(`Will download images of [${mdFile}]\nto localFolder[${localFolder}]`);
         return true;
     };

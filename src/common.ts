@@ -133,16 +133,12 @@ export function mdCheck(file: string): boolean {
     return true;
 }
 // 有本地lcoal路径的检查程序
-export function localCheck(file: string, options: any, defaultFolder = '') {
+export function localCheck(file: string, options: any) {
     if(!mdCheck(file))return false;
     let parentPath = path.dirname(file);
-    let targetFolder = ''; // 目标保存
-    if (options.local == null) {
-        // 判断是否存在
-        targetFolder = path.resolve(parentPath, defaultFolder);
-    } else {
-        targetFolder = path.resolve(parentPath, options.local.trim());
-    }
+    // 目标保存
+    let targetFolder = path.resolve(parentPath, convertPath(options.local?.trim()||''));
+
     if (!fs.existsSync(targetFolder)) {
         logger.info(`local Folder[${targetFolder}] is not exists, will create`)
         try {
@@ -221,4 +217,14 @@ export function getAntiSameFileName(dest: string, filename: string): string {
         }
     }
     return filePath;
+}
+// 识别 <filename> 路径
+export function convertPath(p:string):string
+{
+    if(mdFile == '')
+    {
+        return '';
+    }
+    let oMdFile = path.parse(mdFile);
+    return  p.replace(/<filename>/ig,oMdFile.name);
 }

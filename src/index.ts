@@ -24,7 +24,7 @@ const program = new Command();
 // program.parse(process.argv);
 // 全局options
 program
-    .version('0.0.3')
+    .version('0.0.4')
     .description('manage the images of markdown file')
     .option('-b, --brackets', 'whether the image path include right brackets')
     .hook('preAction', (thisCommand, actionCommand) => {
@@ -55,9 +55,8 @@ program
     });
 program
     .command('d  <file>')
-    .description('download the images that not used in local folder')
-    .option('-l, --local <path>', `local folder which the images will save,support absolute or relative path.
-default is [./markdown file name.assets]`)
+    .description('download the images that not used in local folder,<filename> is md file\'name ')
+    .option('-l, --local <path>', `local folder which the images will save,support absolute or relative path.`,'<filename>.assets')
     .option('-n, --rename', 'whether rename the image file')
     .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create backup file')
     .option('-o, --overwrite', 'overwrite original md file and not create backup file')
@@ -68,16 +67,14 @@ default is [./markdown file name.assets]`)
     });
 program
     .command('u  <file>')
-    .description('upload images by picgo,should global install picgo(npm i picgo -g) and set the config')
+    .description('upload images by picgo,should global install picgo(npm i picgo -g) and set the config,<filename> is md file\'name ')
     .option('-n, --rename', 'whether rename the image file')
     .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create backup file')
     .option('-o, --overwrite', 'overwrite original md file and not create backup file')
     //.option('-d, --direct', 'direct upload image file, not add the mdfile name in path')
     // path be added at begin, default is md file's name (default: "")
-    .option('-p, --remotepath <path>', `which be added at beginning of PicBed path, default is empty.
-When empty, it will add with md file name.
-When '/' or '\\' it will not add anymore.
-It is used for separate the images by md file name.`,'')
+    .option('-p, --remotepath <path>', `which be added at beginning of PicBed path.
+It is used for separate the images.`,'<filename>')
     .action((file, options) => {
         if(upCheck(file, options)){
             upload();

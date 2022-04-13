@@ -129,11 +129,11 @@ The test1.png  and test2.png pictures will be moved to folder e:\doc\aaaa\md-img
 
 Download the network image in MD file, it will only download once when the image's URL is the same.
 
-If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix
+If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix , <filename> is md file'name
 
 ```shell
   -l, --local <path>  local folder which the images will save,support absolute or relative path.
-                      default is [./markdown file name.assets]
+                     (default: "<filename>.assets")
   -n, --rename        whether rename the image file
   -r, --readonly      Only read the md file, if not set,it will update link and create backup file
   -o, --overwrite     overwrite original md file and not create backup file
@@ -195,7 +195,7 @@ linking picgo...
 
 show help `md-img u -h` 
 
-The backup file is named with **_upBK** suffix
+The backup file is named with **_upBK** suffix , <filename> is md file'name
 
 ```shell
 Options:
@@ -203,9 +203,7 @@ Options:
   -r, --readonly           Only read the md file, if not set,it will update link and create backup file
   -o, --overwrite          overwrite original md file and not create backup file
   -p, --remotepath <path>  which be added at beginning of PicBed path, default is empty.
-                           When empty, it will add with md file name.
-                           When '/' or \ it will not add anymore.
-                           It is used for separate the images by md file name. (default: "")
+                           It is used for separate the images. (default: "<filename>")
 ```
 
 #### Example

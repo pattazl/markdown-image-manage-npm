@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { getImages, escapeStringRegexp, logger, getOpt, saveFile, mdFile, mdCheck } from './common'
+import { getImages, escapeStringRegexp, logger, getOpt, saveFile, mdFile, mdCheck, convertPath } from './common'
 // 主要内部变量
 //var downThread = 1;
 let myPicgo = null; // picgo对象
@@ -22,17 +22,7 @@ export function upCheck(file: string, options: any) {
     ({ readonly, rename } = getOpt(options));
     // 需要处理的文件
     // 对MD的结构化
-    let oMdFile = path.parse(mdFile);
-    let rp = options.remotepath
-    if (rp == '') {
-        // 默认使用文件名做路径
-        remotepath = oMdFile.name;
-    } else if (rp.reaplce(/[\\/\s]/g, '') == '') {
-        // 根目录,空目录等，不用加前缀
-        remotepath = '';
-    } else {
-        remotepath = rp;
-    }
+    remotepath = convertPath(options.remotepath)
     return true;
 }
 export function linkPicgo()
