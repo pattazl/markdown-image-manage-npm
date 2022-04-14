@@ -1,6 +1,6 @@
 {
   "name": "markdown-image-manage",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A tool for manage markdown's image",
   "main": "dist/index.js",
   "publishConfig": {
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "commander": "^9.1.0",
-    "fs-extra": "^10.0.1"
+    "fs-extra": "^10.0.1",
+    "dayjs": "^1.7.4"
   }
 }

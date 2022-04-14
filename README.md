@@ -93,7 +93,7 @@ http://github.com/favicon.ico
 
 Check all pictures in the local picture folder of MD file and remove the pictures that do not belong to this MD file
 
-support local picture files suffix include  '.png','.jpg','.bmp','.gif','.jpeg','.ico','.tga','.rle','.tif','.cur','.ani','.iff'
+support local picture files suffix include  .png,.jpg,.bmp,.gif,.jpeg,.ico,.tga,.rle,.tif,.cur,.ani,.iff
 
 1. All local pictures in markdown should to be in the same directory, because this directory will be cleaned up
 2. Move the pictures not referenced in the MD file to the sub-directory( named md-img-remove ) in the picture directory
@@ -129,7 +129,7 @@ The test1.png  and test2.png pictures will be moved to folder e:\doc\aaaa\md-img
 
 Download the network image in MD file, it will only download once when the image's URL is the same.
 
-If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix , <filename> is md file'name
+If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix , "<filename>" is md file'name, "<YYYYMMDD>" support date format(dayjs), such as<DDHHmm>
 
 ```shell
   -l, --local <path>  local folder which the images will save,support absolute or relative path.
@@ -195,7 +195,7 @@ linking picgo...
 
 show help `md-img u -h` 
 
-The backup file is named with **_upBK** suffix , <filename> is md file'name
+The backup file is named with **_upBK** suffix ,  , "<filename>" is md file'name, "<YYYYMMDD>" support date format(dayjs), such as<DDHHmm>
 
 ```shell
 Options:

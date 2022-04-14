@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import * as dayjs from 'dayjs';
 // import * as chalk from 'chalk' 可以不必用chalk 库
 
 let imagePathBracket = false; // 文件名中包含括号
@@ -226,5 +227,11 @@ export function convertPath(p:string):string
         return '';
     }
     let oMdFile = path.parse(mdFile);
-    return  p.replace(/<filename>/ig,oMdFile.name);
+    // return  p.replace(/<filename>/ig,oMdFile.name);
+    let date = dayjs(new Date());
+    return p.replace(/<filename>/ig, oMdFile.name)
+    .replace(/<(.+?)>/ig,function(a,b)  // 支持各种日期格式字符串
+    {
+        return ( date.format(b));
+    });
 }

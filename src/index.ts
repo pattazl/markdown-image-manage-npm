@@ -24,7 +24,7 @@ const program = new Command();
 // program.parse(process.argv);
 // 全局options
 program
-    .version('0.0.4')
+    .version('0.0.5')
     .description('manage the images of markdown file')
     .option('-b, --brackets', 'whether the image path include right brackets')
     .hook('preAction', (thisCommand, actionCommand) => {
@@ -55,7 +55,8 @@ program
     });
 program
     .command('d  <file>')
-    .description('download the images that not used in local folder,<filename> is md file\'name ')
+    .description(`download the images that not used in local folder,
+local support:"<filename>" is md file\'name, "<YYYYMMDD>" support date format(dayjs), such as<DDHHmm>`)
     .option('-l, --local <path>', `local folder which the images will save,support absolute or relative path.`,'<filename>.assets')
     .option('-n, --rename', 'whether rename the image file')
     .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create backup file')
@@ -67,7 +68,8 @@ program
     });
 program
     .command('u  <file>')
-    .description('upload images by picgo,should global install picgo(npm i picgo -g) and set the config,<filename> is md file\'name ')
+    .description(`upload images by picgo,should global install picgo(npm i picgo -g) and set the config,
+remotepath support:"<filename>" is md file\'name, "<YYYYMMDD>" support date format(dayjs), such as<DDHHmm>`)
     .option('-n, --rename', 'whether rename the image file')
     .option('-r, --readonly', 'Only read the md file, if not set,it will update link and create backup file')
     .option('-o, --overwrite', 'overwrite original md file and not create backup file')
