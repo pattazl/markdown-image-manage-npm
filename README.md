@@ -129,7 +129,7 @@ The test1.png  and test2.png pictures will be moved to folder e:\doc\aaaa\md-img
 
 Download the network image in MD file, it will only download once when the image's URL is the same.
 
-If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix , "<filename>" is md file'name, "<YYYYMMDD>" support date format(dayjs), such as<DDHHmm>
+If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix , `<filename>` is md file'name, `<YYYYMMDD>` support date format(dayjs), such as`<DDHHmm>`
 
 ```shell
   -l, --local <path>  local folder which the images will save,support absolute or relative path.
@@ -195,7 +195,7 @@ linking picgo...
 
 show help `md-img u -h` 
 
-The backup file is named with **_upBK** suffix ,  , "<filename>" is md file'name, "<YYYYMMDD>" support date format(dayjs), such as<DDHHmm>
+The backup file is named with **_upBK** suffix ,  , `<filename>` is md file'name, `<YYYYMMDD>` support date format(dayjs), such as`<DDHHmm>`
 
 ```shell
 Options:
@@ -299,11 +299,11 @@ Modify documents
 
 ### 0.0.4
 
-add <filename> support
+add `<filename>` support
 
 ### 0.0.5
 
-add <YYYYMMDD> support date format(dayjs), such as<DDHHmm>
+add `<YYYYMMDD>` support date format(dayjs), such as`<DDHHmm>`
 
 ### 0.0.6
 

@@ -114,7 +114,7 @@ test2.png
 
 详细参数如下
 
-  -l, --local <path> 图片要下载的目标路径，可设置绝对路径或相对路径，默认为<filename>.assets，如md文件为test.md ，则目录为 test.assets, 支持 "<filename>" 表示文件名, "<YYYYMMDD>" 表示日期按(dayjs)模块格式化，比如<DDHHmm>等
+  -l, --local <path> 图片要下载的目标路径，可设置绝对路径或相对路径，默认为`<filename>.assets`，如md文件为test.md ，则目录为 test.assets, 支持 `<filename>`表示文件名, `<YYYYMMDD>` 表示日期按(dayjs)模块格式化，比如`<DDHHmm>`等
   -n, --rename      下载后是否需要重命名图片名，如无此参数将默认用原文件名，如果文件重复，则文件名后将自动添加 **(数字)** ，数字最大为999
   -r, --readonly     仅下载网络图片，但是不修改md文件中对应的图片链接，如无此参数，修改md文件中的图片链接并进行写入。
   -o, --overwrite   修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_dlBK结尾。
@@ -174,7 +174,7 @@ linking picgo...
   -n, --rename            上传时是否重命名图片文件
   -r, --readonly           上传后不修改md文件中对应的图片链接，如无此参数，修改md文件中的图片链接并进行写入。
   -o, --overwrite          修改md文件中的图片链接时不备份原文件，直接覆盖，如无参数则将备份原文件，原文件名以_upBK结尾。
-  -p, --remotepath <path>  图床上需要添加的远程路径，默认为<filename>，表示以文件名命名的路径。支持 "<filename>" 表示文件名, "<YYYYMMDD>" 表示日期按(dayjs)模块格式化，比如<DDHHmm>等
+  -p, --remotepath <path>  图床上需要添加的远程路径，默认为<filename>，表示以文件名命名的路径。支持 `<filename>` 表示文件名, `<YYYYMMDD>` 表示日期按(dayjs)模块格式化，比如`<DDHHmm>`等
 
 比如图床上的设置的默认目录为 /images/ ，上传的文件为test.md，此参数为空，则图片将保存到  /images/test/ 目录下。
 
@@ -268,11 +268,11 @@ Will Move images to localFolder[e:\doc\newfolder]
 
 ### 0.0.4
 
-添加 <filename> 支持
+添加 `filename>` 支持
 
 ### 0.0.5
 
-添加 <YYYYMMDD> 日期格式支持，符合dayjs的日期字符串，比如<DDHHmm>
+添加 `<YYYYMMDD>` 日期格式支持，符合dayjs的日期字符串，比如`<DDHHmm>`
 
 ### 0.0.6
 
