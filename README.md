@@ -297,10 +297,28 @@ Initial trial release of markdown-image-manage tool
 
 Modify documents
 
+### 0.0.4
+
+add <filename> support
+
+### 0.0.5
+
+add <YYYYMMDD> support date format(dayjs), such as<DDHHmm>
+
+### 0.0.6
+
+Fix the invalid filename when download some URL
+
 ## Repository
 
 https://github.com/pattazl/markdown-image-manage-npm
 
 https://gitee.com/pattazl/markdown-image-manage-npm
+
+related vscode extension tool
+
+https://github.com/pattazl/markdown-image-manage
+
+https://gitee.com/pattazl/markdown-image-manage
 
 **Enjoy!**

@@ -3,7 +3,7 @@ import * as https from "https";
 import * as http from "http";
 import * as path from "path";
 import { URL } from "url";
-import { logger, newName ,getAntiSameFileName } from './common'
+import { logger, newName ,getValidFileName } from './common'
 // 伪装成浏览器
 const headers = { "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36" };
 const options = { strictSSL: false, headers };
@@ -22,7 +22,7 @@ async function download(url, dest, options) {
         filename = newName() + path.extname(filename); // 36 进制
       }
 
-      let filePath = getAntiSameFileName(dest, filename);
+      let filePath = getValidFileName(dest, filename);
       if (filePath == '') {
         reject('get file path fail!');
         return;

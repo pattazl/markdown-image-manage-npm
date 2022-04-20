@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { getImages,escapeStringRegexp,logger,
     localCheck,mdFile,localFolder,rename,
-    newName ,getAutoPath,saveFile,getAntiSameFileName} from './common'
+    newName ,getAutoPath,saveFile,getValidFileName} from './common'
 // 主要内部变量
 // let mdFile = ''; // 需要处理的文件
 // let localFolder = ''; // 新的文件夹
@@ -46,7 +46,7 @@ export async function move() // ,thread:number
             // 仅仅更换目录
             newFileName = imageFile.base;
         }
-        let newFile = getAntiSameFileName(localFolder,newFileName);
+        let newFile = getValidFileName(localFolder,newFileName);
         if( newFile == ''){
             logger.error(`get new image file name[${newFile}] fail!`);
             return;

@@ -266,11 +266,29 @@ Will Move images to localFolder[e:\doc\newfolder]
 
 添加相关说明文档
 
+### 0.0.4
+
+添加 <filename> 支持
+
+### 0.0.5
+
+添加 <YYYYMMDD> 日期格式支持，符合dayjs的日期字符串，比如<DDHHmm>
+
+### 0.0.6
+
+修复下载特殊URL时导致文件名非法
+
 ## 仓库地址
 
 https://github.com/pattazl/markdown-image-manage-npm
 
 https://gitee.com/pattazl/markdown-image-manage-npm
+
+相关的VSCode插件地址
+
+https://github.com/pattazl/markdown-image-manage
+
+https://gitee.com/pattazl/markdown-image-manage
 
 **使用愉快!**
 

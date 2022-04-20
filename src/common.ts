@@ -196,24 +196,33 @@ export function saveFile(content:string,suffix:string,count:number) {
     fs.writeFileSync(mdFile, content);
     logger.success(`The image links[${count}] in [${mdFile}] has been updated`);
 }
+// 获取本地有效的文件名
+export function getValidFileName(dest: string, filename: string): string {
+    let pos1= filename.search(/[\/:*\?\"<>|]/); // 找到第一个不合法字符位置截断
+    if(pos1>-1)
+    {
+        filename = filename.substring(0,pos1);
+    }
+    return getAntiSameFileName(dest, filename); // 防止文件重复
+}
 // 输入需要写入的文件名，如果发现重复，增加(序号) ，序号最大999 ，如果成功返回真实路径，否则返回空字符串
-export function getAntiSameFileName(dest: string, filename: string): string {
+function getAntiSameFileName(dest: string, filename: string): string {
     let filePath = path.join(dest, filename);
     while (fs.existsSync(filePath)) // 同名文件数量最多1000
     {
-        // 如果存在，则需要改名,格式为 文件名(数字递增).后缀 返回最新的文件名
+        // 如果存在，则需要改名,格式为 文件名[数字递增].后缀 返回最新的文件名,不建议用() 因为和链接定义可能重复
         let f = path.parse(filePath);
-        var re = /\((\d+)\)$/;
+        var re = /\[(\d+)\]$/;
         if (re.test(f.name)) {
             let num = parseInt(RegExp.$1, 10);
             if (num > 999) {
                 logger.error(`file num[${num}] >999`);
                 return '';
             }
-            let newName = f.name.replace(re, '(' + (++num) + ')') + f.ext;
+            let newName = f.name.replace(re, '[' + (++num) + ']') + f.ext;
             filePath = path.join(dest, newName);
         } else {
-            let newName = f.name + '(1)' + f.ext; // 重复时初始化的文件
+            let newName = f.name + '[1]' + f.ext; // 重复时初始化的文件
             filePath = path.join(dest, newName);
         }
     }
