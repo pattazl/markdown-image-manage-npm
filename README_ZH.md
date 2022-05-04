@@ -278,6 +278,10 @@ Will Move images to localFolder[e:\doc\newfolder]
 
 修复下载特殊URL时导致文件名非法
 
+### 0.0.7
+
+解决下载HTTPS网址时证书无效不能下载的问题
+
 ## 仓库地址
 
 https://github.com/pattazl/markdown-image-manage-npm

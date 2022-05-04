@@ -309,6 +309,10 @@ add `<YYYYMMDD>` support date format(dayjs), such as`<DDHHmm>`
 
 Fix the invalid filename when download some URL
 
+### 0.0.7
+
+Fix the bug, can download images when HTTPS is unauthorized
+
 ## Repository
 
 https://github.com/pattazl/markdown-image-manage-npm
