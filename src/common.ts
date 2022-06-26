@@ -7,6 +7,10 @@ let imagePathBracket = false; // 文件名中包含括号
 export function setBracket(b: boolean) {
     imagePathBracket = b;
 }
+let rootPath = './'; // 根路径，默认为文件本身所在的路径
+export function setRootPath(s: string) {
+    rootPath = s;
+}
 export function getImages(mdFile: string): { local: string[], net: string[], mapping: {}, content: string } {
     var picArrLocal = [];
     var oriMapping = {};
@@ -36,7 +40,8 @@ export function getImages(mdFile: string): { local: string[], net: string[], map
                 picArrNet.push(filepath);
             } else {
                 var tmpFilePath; //全路径
-                tmpFilePath = path.resolve(mdfilePath, filepath); // 支持相对目录和绝对路径
+                let rp = path.resolve(mdfilePath, rootPath) // 根据参数结合MD文件的相对路径
+                tmpFilePath = path.resolve(rp, filepath); // 支持相对目录和绝对路径
                 if (fs.existsSync(tmpFilePath)) {
                     picArrLocal.push(tmpFilePath);
                     oriMapping[tmpFilePath] = oriFlepath; // 原始的本地路径地址
@@ -157,7 +162,7 @@ export function localCheck(file: string, options: any) {
         }
     }
     // 模块内部变量结构赋值
-    ({ readonly, overwriteFile, rename } = getOpt(options));
+    ({ readonly, overwriteFile, rename} = getOpt(options));
     localFolder = targetFolder;
     return true;
 }
@@ -166,7 +171,7 @@ export function getOpt(options) {
     let readonly = (options.readonly!=null);
     let overwriteFile = (options.overwriteFile!=null);
     let rename = (options.rename!=null);
-    return { readonly, overwriteFile, rename }; // 返回
+    return { readonly, overwriteFile, rename}; // 返回
 }
 // 重新命名新文件名
 export function newName() {

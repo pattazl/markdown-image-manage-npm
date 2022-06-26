@@ -1,32 +1,26 @@
 # markdown-image-manage
 
-[TOC]
+[toc]
 
  "markdown-image-manage" is a tool for manage the images of markdown file .
 
 Most of the images in the markdown file (MD file)  are linked as resource. This tool is used to manage these resources, excluding the image used in Base 64 .
 Manage the image resource in the file by command line , you can clean up, move, download and upload the images in the MD file, and modify the MD file's image links at the same time
 
-
 ## Feature
 
 Functions as following :
 
-
 1. Analysis: analyze the resource images in the MD file, list the network and local , and alarm if the local does not exist
-
 2. Clean up: Check all the images in the directory where the MD file's local images are located . If they are not linked in the MD file, they will be moved to the "md-img-remove" directory
-
 3. Download: Download all network images in the MD file to the defined directory
-
 4. Upload: Automatically upload all local images in the MD file to the PicBed through picgo tool
-
 5. Move: move all local images in the MD file to the defined directory
 
 ## Requirements
 
 1. need global install picgo tool when upload image
-2. command usage base on commander.js 
+2. command usage base on commander.js
 
 ## Install
 
@@ -34,7 +28,7 @@ Should be installed with node.js >= 12.
 
 As a tool, suggest global install
 
-`npm i markdown-image-manage -g` 
+`npm i markdown-image-manage -g`
 
 You should global install picgo tool if you want upload pictures to PicBed or FTP Server
 
@@ -42,7 +36,7 @@ You should global install picgo tool if you want upload pictures to PicBed or FT
 
 show help
 
-`md-img -h` 
+`md-img -h`
 
 You should add parameter -b if the image links include the right bracket
 
@@ -56,6 +50,8 @@ d:\image3.png | not exist
 ```
 
 Maybe the image link include right bracket, suggest you add -b and try again，  `md-img -b a mdFilePath`
+
+Can set the image's root path by parameter --rootPath `<path>` when the image links is the relative, the default root path is './' means the MD file's path, you can set by yourself ,even set the absolute path
 
 This tool have some command and functions as below
 
@@ -125,11 +121,11 @@ The test1.png  and test2.png pictures will be moved to folder e:\doc\aaaa\md-img
 
  `md-img d markdownFilePath `
 
- show help  `md-img d -h` 
+ show help  `md-img d -h`
 
 Download the network image in MD file, it will only download once when the image's URL is the same.
 
-If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix , `<filename>` is md file'name, `<YYYYMMDD>` support date format(dayjs), such as`<DDHHmm>`
+If the download filename is the same, it will be named with **(number)** suffix, the max of number is 999 , the backup file is named with **_dlBK** suffix , `<filename>` is md file'name, `<YYYYMMDD>` support date format(dayjs), such as `<DDHHmm>`
 
 ```shell
   -l, --local <path>  local folder which the images will save,support absolute or relative path.
@@ -168,7 +164,7 @@ Global install picgo cli tool first
 
 `npm install picgo -g`
 
-Picgo's introduction in  https://picgo.github.io/PicGo-Core-Doc/  and  https://github.com/PicGo/PicGo-Core 
+Picgo's introduction in  https://picgo.github.io/PicGo-Core-Doc/  and  https://github.com/PicGo/PicGo-Core
 
 After install Picgo , you should set the PicBed's account, and could use cli `picgo u /x/xxx.png` for test upload images
 
@@ -181,7 +177,7 @@ This tool haven't packed the picgo library for small size, and should link the g
 1. Make sure you can use the **picgo** in cli ,and can upload images sucessfully
 2. exec `md-img l` in cli ,  make the link to Picgo
 
-It will show as below if successful link 
+It will show as below if successful link
 
 ```shell
 check picgo installation...
@@ -193,9 +189,9 @@ linking picgo...
 
  `md-img u markdownFilePath `
 
-show help `md-img u -h` 
+show help `md-img u -h`
 
-The backup file is named with **_upBK** suffix ,  , `<filename>` is md file'name, `<YYYYMMDD>` support date format(dayjs), such as`<DDHHmm>`
+The backup file is named with **_upBK** suffix ,  , `<filename>` is md file'name, `<YYYYMMDD>` support date format(dayjs), such as `<DDHHmm>`
 
 ```shell
 Options:
@@ -257,7 +253,7 @@ If can not upload , it will show as below
 
  `md-img m markdownFilePath `
 
-show help `md-img m -h` 
+show help `md-img m -h`
 
 Move the local pictures in MD file to another local folder which you want
 
@@ -280,8 +276,7 @@ Will Move images to localFolder[e:\doc\newfolder]
  The image links[3] in [e:\doc\test.md] has been updated
 ```
 
-It will create the backup file named  test_mvBK.md 
-
+It will create the backup file named  test_mvBK.md
 
 ## Release Notes
 
@@ -303,7 +298,7 @@ add `<filename>` support
 
 ### 0.0.5
 
-add `<YYYYMMDD>` support date format(dayjs), such as`<DDHHmm>`
+add `<YYYYMMDD>` support date format(dayjs), such as `<DDHHmm>`
 
 ### 0.0.6
 
