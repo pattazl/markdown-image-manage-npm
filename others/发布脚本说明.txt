@@ -1,0 +1,6 @@
+npm login 
+pattazl
+
+npm run build 编译
+npm pack 测试打包
+npm publish 发布

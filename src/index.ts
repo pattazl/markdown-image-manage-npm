@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { setBracket,logger,mdCheck,setRootPath } from './common'
+import { setBracket,logger,mdCheck,setPath } from './common'
 import { cleanMD, analyze } from './clean'
 import { download, dlCheck } from './download'
 import { upload, upCheck,linkPicgo } from './upload'
@@ -24,10 +24,11 @@ const program = new Command();
 // program.parse(process.argv);
 // 全局options
 program
-    .version('0.0.8')
+    .version('0.0.9')
     .description('manage the images of markdown file')
     .option('-b, --brackets', 'whether the image path include right brackets')
-    .option('-r, --rootPath <path>', "set the MD image link's root path ",'./')
+    .option('-r, --rootPath <path>', "add the path in the front of MD image links when used absolute path",'')
+    .option('-l, --relativePath <path>', "set the base path of MD image links when used relative path ",'./')
     .hook('preAction', (thisCommand, actionCommand) => {
         if (thisCommand.opts().brackets) {
             setBracket(true);  // 有图片路径中括号的话，匹配方式要用贪婪匹配
@@ -35,10 +36,9 @@ program
             //   console.log('arguments: %O', actionCommand.args);
             //   console.log('options: %o', actionCommand.opts());
         };
-        let rp = thisCommand.opts().rootPath;
-        if (rp!=null) {
-            setRootPath(rp)
-        }
+        let root = thisCommand.opts().rootPath;
+        let relative = thisCommand.opts().relativePath;
+        setPath(root,relative)
     });
 
 // 不同命令行

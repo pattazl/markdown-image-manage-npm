@@ -7,10 +7,13 @@ let imagePathBracket = false; // 文件名中包含括号
 export function setBracket(b: boolean) {
     imagePathBracket = b;
 }
-let rootPath = './'; // 根路径，默认为文件本身所在的路径
-export function setRootPath(s: string) {
-    rootPath = s;
+let rootPath = ''; // 图片为绝对路径时，重定义根路径
+let relativePath = './'; // 图片为相对路径时指向的路径
+export function setPath(root: string, relative:string) {
+    rootPath = root??rootPath;
+    relativePath = relative??relativePath;
 }
+
 export function getImages(mdFile: string): { local: string[], net: string[], mapping: {}, content: string } {
     var picArrLocal = [];
     var oriMapping = {};
@@ -40,8 +43,13 @@ export function getImages(mdFile: string): { local: string[], net: string[], map
                 picArrNet.push(filepath);
             } else {
                 var tmpFilePath; //全路径
-                let rp = path.resolve(mdfilePath, rootPath) // 根据参数结合MD文件的相对路径
-                tmpFilePath = path.resolve(rp, filepath); // 支持相对目录和绝对路径
+                let rp = path.resolve(mdfilePath, relativePath) // 根据参数结合MD文件的相对路径
+                if(path.isAbsolute(filepath) )
+                {
+                    tmpFilePath = path.join(rootPath,filepath) // 支持绝对路径
+                }else{
+                    tmpFilePath = path.resolve(rp, filepath); // 支持相对目录
+                }
                 if (fs.existsSync(tmpFilePath)) {
                     picArrLocal.push(tmpFilePath);
                     oriMapping[tmpFilePath] = oriFlepath; // 原始的本地路径地址

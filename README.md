@@ -51,7 +51,9 @@ d:\image3.png | not exist
 
 Maybe the image link include right bracket, suggest you add -b and try again，  `md-img -b a mdFilePath`
 
-Can set the image's root path by parameter --rootPath `<path>` when the image links is the relative, the default root path is './' means the MD file's path, you can set by yourself ,even set the absolute path
+Can set the image's root path by parameter --rootPath `<path>`  , add the path in the front of MD image links when it is the absolute path, the default root path is '/' means nothing is changed.
+
+Can set the image's base path by parameter --relatviePath `<path> , ` set the the base path when the image links is the relative, default relative path is './' means the MD file's path, you can set by yourself ,even set the absolute path
 
 This tool have some command and functions as below
 
