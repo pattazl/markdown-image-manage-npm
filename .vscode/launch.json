@@ -1,0 +1,38 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node", // 说明底层都是node
+            "request": "launch", // 分为launch(启动) 和 attach(附加)两种
+            "name": "用node调试ts", // 调试配置名
+            "program": "${workspaceFolder}/src/index.ts", // 也可以固定文件，比如 ${file} ${workspaceFolder}/helloworld.ts
+            "preLaunchTask": "My TypeScript compile", // 预运行任务的标签名，具体在tasks.json中定义
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js" // 编译输出目录
+            ],
+            "args": [
+                /*
+                "d",
+                "E:/Austin/md/doc/1.md",
+                "-l ff ",
+                "-n"
+                
+                "m",
+                "E:/Austin/md/doc/1.md",
+                "-l aaaa ",
+                "u",
+                "E:/Austin/md/doc/1.md",
+                "-n"*/
+                "d",
+                "E:/Austin/md/doc/",
+              ],
+            "runtimeArgs": [
+            ],
+            "console": "integratedTerminal", // 相关命令整合到控制台
+            "internalConsoleOptions": "neverOpen" // 是否自动打开 Debug Console 选项窗
+        }
+    ]
+}

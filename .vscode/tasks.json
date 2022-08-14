@@ -1,0 +1,13 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+		{
+			"label": "My TypeScript compile",
+			"type": "shell",
+			"command": "tsc", // 调用全局的tsc进行编译 --outDir ./out/  --sourceMap true
+			"problemMatcher": ["$tsc"],
+		}
+	]
+}
